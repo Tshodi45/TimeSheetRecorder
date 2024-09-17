@@ -1,0 +1,121 @@
+﻿@model TimeSheetRecorder.Models.TimeSheetCaptureViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+
+<h4>Capture Timesheet</h4>
+<hr />
+<input asp-for="IsNew" class="form-control" hidden/>
+<div class="row">
+    <form asp-action="CaptureTimeSheet">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row">
+           <div class="col-md-4">
+                <div class="form-group">
+                    <label asp-for="TimeSheetHeader.Week" class="control-label"></label>
+                    <select asp-for="TimeSheetHeader.Week" class="form-control" id="tMonth" asp-items="ViewBag.NumberOfWeeks" onchange="CallClickfunc()"></select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="TimeSheetHeader.CaptureDate" class="control-label"></label>
+                    <input asp-for="TimeSheetHeader.CaptureDate" class="form-control" />
+                    <span asp-validation-for="TimeSheetHeader.CaptureDate" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="TimeSheetDetail.ActivityDate" class="control-label"></label>
+                    <input asp-for="TimeSheetDetail.ActivityDate" class="form-control" />
+                    <span asp-validation-for="TimeSheetDetail.ActivityDate" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="TimeSheetDetail.ProjectId" class="control-label"></label>
+                    <select asp-for="TimeSheetDetail.ProjectId" class="form-control" asp-items="ViewBag.ProjectId"></select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="TimeSheetDetail.Title" class="control-label"></label>
+                    <input asp-for="TimeSheetDetail.Title" class="form-control" />
+                    <span asp-validation-for="TimeSheetDetail.Title" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="TimeSheetDetail.ActivityHours" class="control-label"></label>
+                    <input asp-for="TimeSheetDetail.ActivityHours" class="form-control" />
+                    <span asp-validation-for="TimeSheetDetail.ActivityHours" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="TimeSheetDetail.Details" class="control-label"></label>
+                    <input asp-for="TimeSheetDetail.Details" class="form-control" />
+                    <span asp-validation-for="TimeSheetDetail.Details" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Add" class="btn btn-primary" />
+                </div>
+           </div>
+            <div class="col-md-8">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Activity Date
+                            </th>
+                            <th>
+                                Title
+                            </th>
+                            <th>
+                                Details
+                            </th>
+                            <th>
+                                Activity Hours
+                            </th>
+
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.TimeSheetDetails)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ActivityDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Title)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Details)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ActivityHours)
+                                </td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.TimeSheetDetailsId">Edit</a> |
+                                    <a asp-action="Details" asp-route-id="@item.TimeSheetDetailsId">Details</a> |
+                                    <a asp-action="Delete" asp-route-id="@item.TimeSheetDetailsId">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+
+        <script>
+            function CallClickfunc() {
+                //Here get the selected value of Year drop down and pass it to URL
+                var theeMonth = $('#tMonth').val();
+
+                var url = "/TimeSheetDetails/CaptureTimeSheet/?month=" + theeMonth;
+
+                window.location.href = url;
+            }
+        </script>
+    }
+}

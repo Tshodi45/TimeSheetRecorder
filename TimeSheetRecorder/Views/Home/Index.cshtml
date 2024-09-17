@@ -1,0 +1,99 @@
+﻿@model IEnumerable<TimeSheetRecorder.Data.TimeSheetDetails>
+
+@{
+    ViewData["Title"] = "Time Sheet Recorder";
+}
+
+<div class="row">
+    <div class="col">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">Time Sheet Recorder</h5>
+            </div>
+            <div class="card-body">
+                <div class="example-container">
+                <form asp-action="Search">
+                    <div class="form-group">
+                        @*   <input type="submit" value="Search" class="btn btn-primary" >*@
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.ActivityDate)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Title)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Details)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.ActivityHours)
+                                </th>
+
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Project.Title)
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ActivityDate)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Title)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Details)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ActivityHours)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Project.Title)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*@section script {
+    $(document).ready(function () {
+    $("#CustomerName").autocomplete({
+        source: function (request, response) {
+            $.ajax({
+                url: '@Url.Action("GetStores", "Home")',
+                datatype: "json",
+                data: {
+                    Areas: 'Sales',
+                    term: request.term
+                },
+                success: function (data) {
+                    response($.map(data, function (val, item) {
+                        return {
+                            label: val.Name,
+                            value: val.Name,
+                            StoreCode: val.ID
+                        }
+                    }))
+                }
+            })
+        },
+        select: function (event, ui) {
+            $("#CustomerID").val(ui.item.customerId);
+        }
+    });
+});
+}*@
